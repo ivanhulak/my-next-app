@@ -1,3 +1,4 @@
+import styles from './page.module.css'
 import Link from "next/link";
 
 export default function AboutLayout({
@@ -6,11 +7,11 @@ export default function AboutLayout({
    children: React.ReactNode;
 }) {
    return (
-      <div>
-         <h1>About Us</h1>
+      <div className="container">
+         <h2 className={styles.title}>About us</h2>
          <ul>
-            <li><Link href='/about/contacts'>Contacts</Link></li>
             <li><Link href='/about/team'>Team</Link></li>
+            <li><Link href='/about/contacts'>Contacts</Link></li>
          </ul>
          {children}
       </div>

@@ -1,29 +1,38 @@
-import Link from 'next/link'
-import React from 'react'
+"use client";
 
-async function fetchPosts(){
-  const response = await fetch('https://jsonplaceholder.org/posts', {
-    next: {
-      revalidate: 60
-    }
-  })
-  return response.json()
+import React from "react";
+import styles from "./page.module.css";
+import { getAllPosts } from '../../services/getPosts';
+import { Posts } from "@/components/Posts";
+import { PostSearch } from "@/components/PostSearch";
+
+export type PostType = {
+   id: number;
+   title: string;
+   body: string;
 }
 
-export default async function Blog(){
+export default function Blog() {
+   const [posts, setPosts] = React.useState<PostType[]>([]);
+   const [loading, setLoading] = React.useState(true);
 
-  const posts = await fetchPosts()
+   React.useEffect(() => {
+      getAllPosts()
+         .then(setPosts)
+         .finally(() => setLoading(false))
+   }, []);
 
-  return (
-    <>
-      <h1>Blog Page</h1>
-      <ul>
-        {posts.map((post: any) => (
-          <li key={post.id}>
-            <Link href={`/blog/${post.id}`}>{post.title}</Link>
-          </li>
-        ))}
-      </ul>
-    </>
-  )
+   return (
+      <>
+         <div className="container">
+            <h2 className={styles.blog__title}>Blog page</h2>
+            <PostSearch onSearch={setPosts}/>
+            {loading ? (
+               <h3>Loading...</h3>
+            ) : (
+               <Posts posts={posts}/>
+            )}
+         </div>
+      </>
+   );
 }

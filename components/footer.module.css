@@ -1,0 +1,14 @@
+.footer{
+   background: #eee;
+}
+.footer__body{
+   height: 50px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.footer__text{
+   font-size: 16px;
+   color: grey;
+}

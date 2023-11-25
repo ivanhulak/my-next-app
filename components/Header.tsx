@@ -1,11 +1,24 @@
-import Link from "@/node_modules/next/link"
+import styles from "./header.module.css";
+import { Navigation } from "./Navigation";
 
-export const Header:React.FC = () => {
+export type NavItem = { 
+   label: string;
+   href: string | any;
+}
+const navItems: NavItem[] = [
+   { label: 'Home', href: '/' },
+   { label: 'Blog', href: '/blog' },
+   { label: 'About', href: '/about' },
+]
+
+export default function Header() {
    return (
-      <header className="header">
-         <Link href='/about'>About</Link>
-         <Link href='/'>Home</Link>
-         <Link href='/blog'>Blog</Link>
+      <header className={styles.header}>
+         <div className="container">
+            <div className={styles.header__body}>
+               <Navigation navItems={navItems}/> 
+            </div>
+         </div>
       </header>
-   )
+   );
 }

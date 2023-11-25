@@ -1,37 +1,31 @@
 import { Metadata } from "next";
+import { getPost } from '../../../services/getPosts'
 
 type Props = {
-   params: { id: string };
+   params: {
+      id: number;
+   };
 };
 
-export async function generateMetadata({
-   params: { id },
-}: Props): Promise<Metadata> {
-   const post = await fetchPost(id);
+export async function generateMetadata({ params: { id } }: Props): Promise<Metadata> {
+   const post = await getPost(id)
 
    return {
-      title: post.slug,
-   };
-}
-
-async function fetchPost(id: string) {
-   const response = await fetch(`https://jsonplaceholder.org/posts/${id}`, {
-      next: {
-         revalidate: 60,
-      },
-   });
-   return response.json();
+      title: post.title.length > 20 ?  post.title.substring(0, 20) + '...' : post.title,
+      description: post.body
+   }
 }
 
 export default async function Post({ params: { id } }: Props) {
-   const post = await fetchPost(id);
+   const post = await getPost(id)
 
    return (
       <>
-         <h1>Post Page {id}</h1>
-         <div>{post.title}</div>
-         <hr />
-         <div>{post.content}</div>
+         <div className="container">
+            <h2>post #{id}</h2>
+            <h3>{post.title}</h3>
+            <div>{post.body}</div>
+         </div>
       </>
    );
 }
